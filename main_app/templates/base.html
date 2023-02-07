@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=ssedge" />
+    <title>FenderBlender</title>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </head>
+  <body>
+    <header class="navbars-fixed">
+      <nav>
+        <div class="nav-wrapper">
+          <ul>
+            <li>
+              <a href="/" class="left brand-logo">&nbsp;&nbsp;FenderBlender</a>
+            </li>
+          </ul>
+          <ul id="dropdown1" class="dropdown-content">
+            <li><a href="#!">Buildings</a></li>
+            <li><a href="{% url 'car_create' %}">Cars</a></li>
+            <li><a href="#!">Characters</a></li>
+            <li><a href="#!">Environments</a></li>
+          </ul>
+          <ul class="right">
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'index' %}">Projects</a></li>   
+            {% if user.is_authenticated %}
+            <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Add Assets</a></li>
+            <li><a href="{% url 'asset_index' %}">see all Assets</a></li>
+            <li><a href="{% url 'funko_create' %}">Create Project</a></li>
+            <li><a href="{% url 'logout' %}">LogOut</a></li> 
+            {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'signup' %}">Sign up</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <main class="container">{% block content %} {% endblock %}</main>
+    <footer class="page-footer">
+      <div class="right">
+        All Rights Reserved, &copy; 2023 FenderBlender &nbsp;
+      </div>
+    </footer>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const elems = document.querySelectorAll('.dropdown-trigger');
+        const instances = M.Dropdown.init(elems, {coverTrigger: false});
+      });
+    </script>
+  </body>
+</html>

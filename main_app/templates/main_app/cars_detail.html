@@ -1,0 +1,18 @@
+{% extends 'base.html' %} {% block content%}
+
+<h1>Car Details</h1>
+
+<div class="card">
+    <a href="{% url 'car_detail' cars.id %}">
+        <div class="card-content">
+            <span class="card-title">
+                {{cars.name}}
+            </span></div>
+    </a>
+    <div class="card-action">
+        <a href="{% url 'car_update' cars.id%}">edit</a>
+        <a href="{% url 'car_delete' cars.id%}">Delete</a>
+    </div>
+</div>
+
+{% endblock %}
