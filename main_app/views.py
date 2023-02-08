@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 import uuid
 import boto3
-from .models import Projects, Cars, Buildings, Environments, Characters
+from .models import Projects, Cars, Environments, Characters
 
 # from .forms import 
 S3_BASE_URL = 'https://s3.us-east-1.amazonaws.com/'
@@ -76,25 +76,26 @@ class CarCreate(LoginRequiredMixin, CreateView):
 
 class CarDetail(LoginRequiredMixin, DetailView):
     model = Cars
-    sucessful_url = '/Cars/'
+    sucessful_url = '/cars/'
 
 
 class CarDelete(LoginRequiredMixin, DeleteView):
     model = Cars
-    success_url = '/Cars/'
+    success_url = '/cars/'
 
 
 class CarUpdate(LoginRequiredMixin, UpdateView):
     model = Cars
     fields = '__all__'
     
-class BuildingIndex(LoginRequiredMixin, ListView):
-    model = Buildings
+    
+class EnvironmentIndex(LoginRequiredMixin, ListView):
+    model = Environments
 
 
-class BuildingCreate(LoginRequiredMixin, CreateView):
-    model = Buildings
-    fields = ['file', 'name', 'brand', 'trim', 'date', 'description']
+class EnvironmentCreate(LoginRequiredMixin, CreateView):
+    model = Environments
+    fields = ['file', 'name', 'date', 'description']
     
     
     def form_valid(self, form):
@@ -114,19 +115,29 @@ class BuildingCreate(LoginRequiredMixin, CreateView):
     
     
 
-class BuildingDetail(LoginRequiredMixin, DetailView):
-    model = Buildings
-    sucessful_url = '/Buildings/'
+class EnvironmentDetail(LoginRequiredMixin, DetailView):
+    model = Environments
+    sucessful_url = '/Environments/'
 
 
-class BuildingDelete(LoginRequiredMixin, DeleteView):
-    model = Buildings
-    success_url = '/Buildings/'
+class EnvironmentDelete(LoginRequiredMixin, DeleteView):
+    model = Environments
+    success_url = '/Environments/'
 
 
-class BuildingUpdate(LoginRequiredMixin, UpdateView):
-    model = Buildings
-    fields = '__all__'
+class EnvironmentUpdate(LoginRequiredMixin, UpdateView):
+    model = Environments
+    fields = '__all__'   
+
+
+
+def add_editting(request, project_id):
+    form = CleaningForm(request.POST)
+    if form.is_valid():
+        new_cleaning = form.save(commit=False)
+        new_cleaning.project_id = project_id
+        new_cleaning.save()
+    return redirect('detail', project_id=project_id)
     
 def signup(request):
   error_message = ''

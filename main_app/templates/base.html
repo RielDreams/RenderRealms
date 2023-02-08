@@ -23,16 +23,14 @@
             </li>
           </ul>
           <ul id="dropdown1" class="dropdown-content">
-            <li><a href="#!">Buildings</a></li>
             <li><a href="{% url 'car_create' %}">Cars</a></li>
-            <li><a href="#!">Characters</a></li>
-            <li><a href="#!">Environments</a></li>
+            <li><a href="">Characters</a></li>
+            <li><a href="{% url 'environment_create' %}">Environments</a></li>
           </ul>
           <ul id="dropdown2" class="dropdown-content">
-            <li><a href="#!">Buildings</a></li>
             <li><a href="{% url 'car_index' %}">Cars</a></li>
-            <li><a href="#!">Characters</a></li>
-            <li><a href="#!">Environments</a></li>
+            <li><a href="">Characters</a></li>
+            <li><a href="{% url 'environment_index' %}">Environments</a></li>
           </ul>
           <ul class="right">
             <li><a href="{% url 'about' %}">About</a></li>
@@ -52,7 +50,7 @@
     </header>
     <main class="container">{% block content %} {% endblock %}</main>
     <footer class="page-footer">
-      <div class="right">
+      <div class="center">
         All Rights Reserved, &copy; 2023 FenderBlender &nbsp;
       </div>
     </footer>
