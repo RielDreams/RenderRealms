@@ -4,7 +4,7 @@
 
 {% for car in object_list %}
 <div class="card">
-  <a href="{% url 'car_detail' team.id %}" >
+  <a href="{% url 'car_detail' car.id %}" >
   <div class="card-content">
     <span class="card-title">
         {{car.name}}

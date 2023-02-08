@@ -46,12 +46,7 @@ class ProjectDelete(DeleteView):
      model = Projects
      success_url = '/projects/'
      
-class Index(LoginRequiredMixin, ListView):
-    template_name = 'assets_detail.html'
-    
-    def get_queryset(self):
-        cars = Cars.objects.all()
-        return list(cars)
+
 
 class CarIndex(LoginRequiredMixin, ListView):
     model = Cars
@@ -93,6 +88,45 @@ class CarUpdate(LoginRequiredMixin, UpdateView):
     model = Cars
     fields = '__all__'
     
+class BuildingIndex(LoginRequiredMixin, ListView):
+    model = Buildings
+
+
+class BuildingCreate(LoginRequiredMixin, CreateView):
+    model = Buildings
+    fields = ['file', 'name', 'brand', 'trim', 'date', 'description']
+    
+    
+    def form_valid(self, form):
+        
+        form.instance.user = self.request.user
+        blender_file = self.request.FILES.get('blender-file', None)
+        if blender_file:
+            s3 = boto3.client('s3')
+            key = uuid.uuid4().hex[:6] + blender_file.name[blender_file.name.rfind('.'):]
+            try:
+                s3.upload_fileobj(blender_file, BUCKET, key)
+                url = f"{S3_BASE_URL}{BUCKET}/{key}"
+                form.instance.url = url
+            except:
+                print('An error occurred uploading file to S3')
+        return super().form_valid(form)
+    
+    
+
+class BuildingDetail(LoginRequiredMixin, DetailView):
+    model = Buildings
+    sucessful_url = '/Buildings/'
+
+
+class BuildingDelete(LoginRequiredMixin, DeleteView):
+    model = Buildings
+    success_url = '/Buildings/'
+
+
+class BuildingUpdate(LoginRequiredMixin, UpdateView):
+    model = Buildings
+    fields = '__all__'
     
 def signup(request):
   error_message = ''
