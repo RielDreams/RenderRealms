@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content%}
 
-<h1>Car Details</h1>
+<h1>Cars</h1>
 
 {% for car in cars %}
 <div class="card">
@@ -17,6 +17,7 @@
 
 <h1>Buildings</h1>
 
+{% for building in buildings %}
 <div class="card">
     <a href="">
         <div class="card-content">
@@ -25,9 +26,11 @@
             </span></div>
         </a>
     </div>
+{% endfor %}
     
     <h1>Environments</h1>
-    
+
+{% for environment in buildings %}
     <div class="card">
         <a href="">
             <div class="card-content">
@@ -36,9 +39,11 @@
             </span></div>
     </a>
 </div>
+{% endfor %}
 
 <h1>Characters</h1>
 
+{% for environment in buildings %}
 <div class="card">
     <a href="">
         <div class="card-content">
@@ -47,6 +52,6 @@
             </span></div>
     </a>
 </div>
-
+{% endfor %}
 
 {% endblock %}
