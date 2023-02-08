@@ -1,17 +1,15 @@
 {% extends 'base.html' %} {% block content%}
 
-<h1>Car Details</h1>
+<h1>Building Details</h1>
 
 <div class="card">
-    <a href="{% url 'car_detail' cars.id %}">
+    <a href="{% url 'building_detail' buildings.id %}">
         <div class="card-content">
             <span class="card-title">
-                {{cars.name}}
+                {{buildings.name}}
             </span>
         </div>
-        <div>
-            <p>brand: {{cars.brand}}</p>
-        </div>
+        <p>brand {{buildings.brand}}</p>
     </a>
     <div class="card-action">
         <a href="{% url 'car_update' cars.id%}">edit</a>

@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>Population</h1>
+
+{% for character in object_list %}
+<div class="card">
+  <a href="{% url 'car_detail' car.id %}" >
+  <div class="card-content">
+    <span class="card-title">
+        {{character.name}}
+        </span>
+  </div>
+  </a>
+</div>
+{% endfor %} {% endblock %}
