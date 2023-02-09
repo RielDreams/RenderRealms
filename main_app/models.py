@@ -17,7 +17,7 @@ class Cars(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     trim = models.CharField(max_length=100)
     date = models.DateField('Date Created') 
-    file = models.FileField(upload_to='blender_files/')
+    url = models.CharField(max_length=250)
     description = models.TextField(max_length=255, blank=True)
     
     
@@ -32,7 +32,7 @@ class Environments(models.Model):
     name = models.CharField(max_length=250)
     date = models.DateField('Date Created')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    file = models.FileField(upload_to='blender_files/')
+    url = models.CharField(max_length=250)
     description = models.TextField(max_length=255, blank=True)
     
     def __str__(self) -> str:
@@ -45,7 +45,7 @@ class Characters(models.Model):
     name = models.CharField(max_length=250)
     date = models.DateField('Date Created')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    file = models.FileField(upload_to='blender_files/')
+    url = models.CharField(max_length=250)
     description = models.TextField(max_length=255, blank=True)
     
     def __str__(self) -> str:

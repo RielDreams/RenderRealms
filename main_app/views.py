@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import uuid
 import boto3
 from .models import Projects, Cars, Environments, Characters
+from .forms import EditProjectsForm
 
 # from .forms import 
 S3_BASE_URL = 'https://s3.us-east-1.amazonaws.com/'
@@ -26,7 +27,20 @@ def projects_index(request):
 
 def projects_detail(request, projects_id):
     project = Projects.objects.get(id=projects_id)
-    return render(request, 'projects/detail.html', {'project': project})
+    editting_form = EditProjectsForm()
+    cars_not_assign = Cars.objects.exclude(id__in = project.cars.all().values_list('id'))
+    return render(request, 'projects/detail.html', {'project': project,
+                                                    "editting_form": editting_form,
+                                                    "cars": cars_not_assign})
+
+def assoc_car(request, projects_id, car_id):
+    Projects.objects.get(id=projects_id).cars.add(car_id)
+    return redirect('detail', projects_id=projects_id)
+
+def disassoc_car(request, projects_id, car_id):
+    Projects.objects.get(id=projects_id).cars.remove(car_id)
+    return redirect('detail', projects_id=projects_id)
+    
     
     
 class ProjectCreate(CreateView):
@@ -54,7 +68,7 @@ class CarIndex(LoginRequiredMixin, ListView):
 
 class CarCreate(LoginRequiredMixin, CreateView):
     model = Cars
-    fields = ['file', 'name', 'brand', 'trim', 'date', 'description']
+    fields = ['name', 'brand', 'trim', 'date', 'description']
     
     
     def form_valid(self, form):
@@ -87,11 +101,9 @@ class CarDelete(LoginRequiredMixin, DeleteView):
 class CarUpdate(LoginRequiredMixin, UpdateView):
     model = Cars
     fields = '__all__'
-    
-    
+     
 class EnvironmentIndex(LoginRequiredMixin, ListView):
     model = Environments
-
 
 class EnvironmentCreate(LoginRequiredMixin, CreateView):
     model = Environments
@@ -112,31 +124,25 @@ class EnvironmentCreate(LoginRequiredMixin, CreateView):
             except:
                 print('An error occurred uploading file to S3')
         return super().form_valid(form)
-    
-    
 
 class EnvironmentDetail(LoginRequiredMixin, DetailView):
     model = Environments
     sucessful_url = '/Environments/'
 
-
 class EnvironmentDelete(LoginRequiredMixin, DeleteView):
     model = Environments
     success_url = '/Environments/'
-
 
 class EnvironmentUpdate(LoginRequiredMixin, UpdateView):
     model = Environments
     fields = '__all__'   
 
-
-
 def add_editting(request, project_id):
-    form = CleaningForm(request.POST)
+    form = EditProjectsForm(request.POST)
     if form.is_valid():
-        new_cleaning = form.save(commit=False)
-        new_cleaning.project_id = project_id
-        new_cleaning.save()
+        new_edits = form.save(commit=False)
+        new_edits.project_id = project_id
+        new_edits.save()
     return redirect('detail', project_id=project_id)
     
 def signup(request):

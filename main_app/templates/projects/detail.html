@@ -18,9 +18,103 @@
     <div class="col s6">
         <form action="{% url 'add_editting' project.id %}">
             {% csrf_token %} 
-            {{Editprojects_form.as_p}}
-            <input type="submit" value="" class="btn">
+            {{editting_form.as_p}}
+            <input type="submit" value="Editted" class="btn">
         </form>
     </div>
 </div>
+<h2>Assets in {{project.name}}'s project</h2>
+<div class="row">
+    <div class="col s6">
+        {% if project.cars.count %}
+        <ul class="collapsible">
+            <li>
+                <div class="collapsible-header"><h5>Avialable Cars</h5></div>
+            {% for car in project.cars.all %}
+                <div class="collapsible-body row">
+                    <div class='card-content col s6'>
+                        <span class="card-title">
+                            {{car.name}} 
+                        </span></div>
+                    <div class="card-action col s6">
+                        <form action="{% url 'disassoc_car' project.id car.id %}" method="'POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn">Remove</button></form>
+                    </div>
+                </div>
+            </li>
+         </ul>
+        {% endfor %}
+        {% else %}
+        <div class="collapsible card">
+                <h5>There aren't any cars in {{project.name}}</h5>
+        </div>
+{% endif %}
+    </div>
+    <div class="col s6">
+        <ul class="collapsible">
+            <li>
+              <div class="collapsible-header"><h5>Avialable Cars</h5></div>
+            {% if cars.count %} 
+            {% for car in cars.all %}
+            <div class="collapsible-body row">
+                <a href="">
+                <div class="card-content col s6">
+                    <h6 class="card-title">
+                        {{car.name}}
+                    </h6>
+                </div></a>
+                <div class="card-action col s6">
+                    <form action="{% url 'assoc_car' project.id car.id %}" method="'POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">ADD</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %} {% endif %}
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <li>
+        <div class="collapsible-header"><h5>Avialable environment
+        </h5></div>
+        {% if buildings.count %} 
+        {% for building in buildings.all %}
+        <div class="collapsible-body row">
+            <a href="">
+                <div class="card-content col s6">
+                    <h6 class="card-title">
+                    {{building.name}}
+                    </h6>
+                 </div>
+            </a>
+        <div class="card-action col s6">
+            <form action="" method="'POST">
+                {% csrf_token %}
+                <button type="submit" class="btn">ADD</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %} {% endif %}                
+    </li>
+</div>
+
+
+
+<script>
+    const dateEl = document.getElementById('id_date')
+M.Datepicker.init(dateEl, {
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    AutoClose: true,
+})
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems, {accordion: true});
+  });
+</script>
+
 {% endblock %}

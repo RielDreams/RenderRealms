@@ -6,17 +6,39 @@ body {
   }
   
 nav, footer{
-    background-color: blue;
+    background-color: goldenrod;
 }
 
   main {
     flex: 1 0 auto;
   }
   
-  footer {
+  .page-footer {
     padding-top: 0;
     text-align: right;
+    background-color: goldenrod;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+
+.collapsible-header, .card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 7rem;
+}
+
+.collapsible-header:hover, .card:hover {
+  box-shadow: 1px, 1px, 10px, goldenrod;
+}
+
+p {
+  text-align: center;
+  font-size: larger;
+}
+
 
 .home{
   width: 100vh;
