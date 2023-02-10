@@ -9,6 +9,7 @@ import uuid
 import boto3
 from .models import Projects, Cars, Environments, Characters
 from .forms import EditProjectsForm
+from django.contrib.auth.models import User
 
 # from .forms import 
 S3_BASE_URL = 'https://s3.us-east-1.amazonaws.com/'
@@ -32,17 +33,18 @@ def projects_detail(request, projects_id):
     return render(request, 'projects/detail.html', {'project': project,
                                                     "editting_form": editting_form,
                                                     "cars": cars_not_assign})
-
+@login_required
 def assoc_car(request, projects_id, car_id):
     Projects.objects.get(id=projects_id).cars.add(car_id)
     return redirect('detail', projects_id=projects_id)
 
+@login_required
 def disassoc_car(request, projects_id, car_id):
     Projects.objects.get(id=projects_id).cars.remove(car_id)
     return redirect('detail', projects_id=projects_id)
     
     
-    
+
 class ProjectCreate(CreateView):
     model = Projects
     fields = ['name', 'date', 'purpose']
@@ -137,13 +139,13 @@ class EnvironmentUpdate(LoginRequiredMixin, UpdateView):
     model = Environments
     fields = '__all__'   
 
-def add_editting(request, project_id):
+def add_editting(request, projects_id):
     form = EditProjectsForm(request.POST)
     if form.is_valid():
         new_edits = form.save(commit=False)
-        new_edits.project_id = project_id
+        new_edits.project_id = projects_id
         new_edits.save()
-    return redirect('detail', project_id=project_id)
+    return redirect('detail', projects_id=projects_id)
     
 def signup(request):
   error_message = ''

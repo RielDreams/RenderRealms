@@ -3,25 +3,34 @@ body {
     min-height: 100vh;
     flex-direction: column;
     text-align: center;
+    color: goldenrod;
   }
   
 nav, footer{
     background-color: goldenrod;
 }
 
-  main {
-    flex: 1 0 auto;
-  }
+main {
+  flex: 1 0 auto;
+}
+
+nav>a {
+  text-shadow: 1px, 1px, 1px, navy;
+}
+
+span {
+  color: goldenrod;
+}
   
-  .page-footer {
-    padding-top: 0;
-    text-align: right;
-    background-color: goldenrod;
-    height: 3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.page-footer {
+  padding-top: 0;
+  text-align: right;
+  background-color: goldenrod;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .collapsible-header, .card {
   display: flex;
@@ -30,7 +39,7 @@ nav, footer{
   min-height: 7rem;
 }
 
-.collapsible-header:hover, .card:hover {
+.collapsible:hover {
   box-shadow: 1px, 1px, 10px, goldenrod;
 }
 
@@ -39,7 +48,17 @@ p {
   font-size: larger;
 }
 
+@media only screen and (min-width: 993px){
+nav a.sidenav-trigger {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}}
 
 .home{
   width: 100vh;
+}
+
+.datepicker-date-display {
+  background-color: black;
 }

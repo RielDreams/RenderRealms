@@ -113,14 +113,3 @@ class EditProjects(models.Model):
     
     class Meta:
         ordering = ('-date',)
-    
-    
-class EditCharacters(models.Model):
-    date = models.DateField('Date Editted')
-    project = models.ForeignKey(Projects, on_delete=models.CASCADE)
-    
-    def __str__(self) -> str:
-        return f'{self.date}'
-    
-    class Meta:
-        ordering = ('-date',)

@@ -17,34 +17,42 @@
     <header class="navbars-fixed">
       <nav>
         <div class="nav-wrapper">
-          <ul>
-            <li>
-              <a href="/" class="left brand-logo">&nbsp;&nbsp;RenderRealms</a>
-            </li>
-          </ul>
-          <ul id="dropdown1" class="dropdown-content">
-            <li><a href="{% url 'car_create' %}">Cars</a></li>
-            <li><a href="">Characters</a></li>
-            <li><a href="{% url 'environment_create' %}">Environments</a></li>
-          </ul>
-          <ul id="dropdown2" class="dropdown-content">
-            <li><a href="{% url 'car_index' %}">Cars</a></li>
-            <li><a href="">Characters</a></li>
-            <li><a href="{% url 'environment_index' %}">Environments</a></li>
-          </ul>
-          <ul class="right">
-            <li><a href="{% url 'about' %}">About</a></li>
-            <li><a href="{% url 'index' %}">Projects</a></li>   
+          <ul id="slide-out" class="sidenav">
             {% if user.is_authenticated %}
-            <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Add Assets</a></li>
-            <li><a class="dropdown-trigger" href="#!" data-target="dropdown2">see Assets</a></li>
-            <li><a href="{% url 'funko_create' %}">Create Project</a></li>
-            <li><a href="{% url 'logout' %}">LogOut</a></li> 
-            {% else %}
-            <li><a href="{% url 'login' %}">Login</a></li>
-            <li><a href="{% url 'signup' %}">Sign up</a></li>
+            <li><div class="user-view">
+              <div class="background">
+                <img src="images/office.jpg">
+              </div>
+              <a href="#email"><span class="white-text email">{{user}}</span></a>
+            </div></li>
             {% endif %}
+            <ul id="dropdown1" class="dropdown-content">
+              <li><a href="{% url 'car_create' %}">Cars</a></li>
+              <li><a href="">Characters</a></li>
+              <li><a href="{% url 'environment_create' %}">Environments</a></li>
+            </ul>
+            <ul id="dropdown2" class="dropdown-content">
+              <li><a href="{% url 'car_index' %}">Cars</a></li>
+              <li><a href="">Characters</a></li>
+              <li><a href="{% url 'environment_index' %}">Environments</a></li>
+            </ul>
+            <ul class="right">
+              <li><a href="/">Home</a></li>
+              <li><a href="{% url 'about' %}">About</a></li>
+              <li><a href="{% url 'index' %}">Projects</a></li>   
+              {% if user.is_authenticated %}
+              <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Add Assets</a></li>
+              <li><a class="dropdown-trigger" href="#!" data-target="dropdown2">see Assets</a></li>
+              <li><a href="{% url 'funko_create' %}">Create Project</a></li>
+              <li><a href="{% url 'logout' %}">LogOut</a></li> 
+              {% else %}
+              <li><a href="{% url 'login' %}">Login</a></li>
+              <li><a href="{% url 'signup' %}">Sign up</a></li>
+              {% endif %}
+            </ul>
           </ul>
+          <a href="#" data-target="slide-out" class="brand-logo sidenav-trigger">RenderRealms</a>
+
         </div>
       </nav>
     </header>
@@ -58,6 +66,12 @@
       document.addEventListener('DOMContentLoaded', function() {
         const elems = document.querySelectorAll('.dropdown-trigger');
         const instances = M.Dropdown.init(elems, {coverTrigger: false});
+      });
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.sidenav');
+        var instances = M.Sidenav.init(elems, {edge: 'left',
+      draggable: true});
       });
     </script>
   </body>
