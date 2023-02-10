@@ -1,20 +1,28 @@
 {% extends 'base.html' %} {% block content%}
 
-<h1>{{cars.name}}</h1>
+<a href="{% url 'car_detail' cars.id %}">
+    <h1>{{cars.name}}</h1>
+</a>
 
-<div class="card">
-    <div class="card-content">
-        <a href="{% url 'car_detail' cars.id %}">
-            <p>brand: {{cars.brand}}</p>
-            {{cars.trim}}
-            {{cars.date}}
-            {{description}}
-        </a>
+<div class="row">
+      <div class="card">
+        <div class="card-image">
+            <img src="{{cars.photo_url}}" alt=""/>
+        </div>
+        <div class="card-stacked">
+            <div class="card-content">
+                <h6>Brand: {{cars.brand}}</h6>
+                <h6>Trim: {{cars.trim}}</h6>
+                <h6>Date Created: {{cars.date}}</h6>
+                <p>Description: {{cars.description}}</p>
+            </div>
+            <div class="card-action">
+                <a href="{% url 'car_update' cars.id%}">edit</a>
+                <a href="{% url 'car_delete' cars.id%}">Delete</a>
+            </div>
+        </div>
+      </div>
     </div>
-        <div class="card-action">
-            <a href="{% url 'car_update' cars.id%}">edit</a>
-            <a href="{% url 'car_delete' cars.id%}">Delete</a>
-        </div>   
-</div>
+<p></p>
 
 {% endblock %}

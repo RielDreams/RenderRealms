@@ -5,11 +5,11 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import CarForm
 import uuid
 import boto3
 from .models import Projects, Cars, Environments, Characters
 from .forms import EditProjectsForm
-from django.contrib.auth.models import User
 
 # from .forms import 
 S3_BASE_URL = 'https://s3.us-east-1.amazonaws.com/'
@@ -70,22 +70,23 @@ class CarIndex(LoginRequiredMixin, ListView):
 
 class CarCreate(LoginRequiredMixin, CreateView):
     model = Cars
-    fields = ['name', 'brand', 'trim', 'date', 'description']
+    form_class = CarForm
     
     
     def form_valid(self, form):
-        
         form.instance.user = self.request.user
-        blender_file = self.request.FILES.get('blender-file', None)
-        if blender_file:
+        photo_file = self.request.FILES.get('photo', None)
+        if photo_file:
             s3 = boto3.client('s3')
-            key = uuid.uuid4().hex[:6] + blender_file.name[blender_file.name.rfind('.'):]
+            key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
             try:
-                s3.upload_fileobj(blender_file, BUCKET, key)
+                s3.upload_fileobj(photo_file, BUCKET, key)
                 url = f"{S3_BASE_URL}{BUCKET}/{key}"
-                form.instance.url = url
-            except:
-                print('An error occurred uploading file to S3')
+                form.instance.photo_url = url
+                print(form.instance)
+            except Exception as error:
+                print('An error occurred uploading photo file to S3')
+                print(error)
         return super().form_valid(form)
     
     

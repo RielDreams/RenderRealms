@@ -12,8 +12,7 @@ nav, footer{
 
 main {
   flex: 1 0 auto;
-}
-
+} 
 nav>a {
   text-shadow: 1px, 1px, 1px, navy;
 }
@@ -32,15 +31,11 @@ span {
   align-items: center;
 }
 
-.collapsible-header, .card {
+.collapsible-header {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 7rem;
-}
-
-.collapsible:hover {
-  box-shadow: 1px, 1px, 10px, goldenrod;
 }
 
 p {
@@ -49,11 +44,13 @@ p {
 }
 
 @media only screen and (min-width: 993px){
-nav a.sidenav-trigger {
-    display:flex;
-    justify-content: center;
+  nav a.sidenav-trigger {
+    display: flex;
     align-items: center;
-}}
+    justify-content: center;
+}
+}
+
 
 .home{
   width: 100vh;

@@ -17,9 +17,8 @@ class Cars(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     trim = models.CharField(max_length=100)
     date = models.DateField('Date Created') 
-    url = models.CharField(max_length=250)
-    description = models.TextField(max_length=255, blank=True)
-    
+    description = models.TextField(max_length=255)
+    photo_url = models.CharField(max_length=500)
     
     def __str__(self) -> str:
         return f'{self.name}'
@@ -113,3 +112,8 @@ class EditProjects(models.Model):
     
     class Meta:
         ordering = ('-date',)
+
+
+class Photo(models.Model):
+    url = url = models.CharField(max_length=250)
+    
