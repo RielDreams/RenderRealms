@@ -1,13 +1,13 @@
 {% extends 'base.html' %} {% block content %}
-<h1>Delete {{building.name}}</h1>
+<h1>Delete {{character.name}}</h1>
 
 <h4>
-  Are you sure you want to delete {{building.name }}?
+  Are you sure you want to delete {{character.name }}?
 </h4>
 
 <form action="" method="POST">
   {% csrf_token %}
   <input type="submit" value="Yes - Delete!" class="btn" />
-  <a href="{% url 'building_detail' object.id %}">Cancel</a>
+  <a href="{% url 'character_detail' object.id %}">Cancel</a>
 </form>
 {% endblock %}

@@ -1,19 +1,20 @@
 {% extends 'base.html' %} {% block content%}
-
-<h1>environment Details</h1>
-
-<div class="card">
-    <a href="{% url 'environment_detail' environments.id %}">
-        <div class="card-content">
-            <span class="card-title">
-                {{environmentss.name}}
-            </span>
+<a href="{% url 'environment_detail' environments.id %}">
+<h1>{{environments.name}} Details</h1>
+</a>
+<div class="row">
+    <div class="card">
+        <div class="card-image">
+            <img src="{{environments.photo_url}}" alt=""/>
         </div>
-        <p>brand {{environments.brand}}</p>
-    </a>
-    <div class="card-action">
-        <a href="{% url 'environments_update' environmentss.id%}">edit</a>
-        <a href="{% url 'environments_delete' environmentss.id%}">Delete</a>
+        <div class="card-content">
+            <h6>Date Created:{{environments.date}}</h6>
+            <p>Description: {{environments.description}}</p>
+        </div>
+        <div class="card-action">
+            <a href="{% url 'environment_update' environments.id%}">edit</a>
+            <a href="{% url 'environment_delete' environments.id%}">Delete</a>
+        </div>
     </div>
 </div>
 

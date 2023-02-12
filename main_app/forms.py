@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from .models import EditProjects, Cars
+from .models import EditProjects, Cars, Environments
 
 class EditProjectsForm(ModelForm):
     class Meta:
@@ -14,3 +14,10 @@ class CarForm(forms.ModelForm):
     class Meta:
         model = Cars
         fields = ['name', 'brand', 'trim', 'date', 'description', 'photo']
+
+class EnvironmentForm(forms.ModelForm):
+    photo = forms.ImageField()
+    
+    class Meta:
+        model = Environments
+        fields = ['name', 'date', 'description', 'photo']

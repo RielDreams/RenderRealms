@@ -5,7 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import CarForm
+from .forms import CarForm, EnvironmentForm
 import uuid
 import boto3
 from .models import Projects, Cars, Environments, Characters
@@ -30,9 +30,12 @@ def projects_detail(request, projects_id):
     project = Projects.objects.get(id=projects_id)
     editting_form = EditProjectsForm()
     cars_not_assign = Cars.objects.exclude(id__in = project.cars.all().values_list('id'))
+    environments_not_assign = Environments.objects.exclude(id__in = project.cars.all().values_list('id'))
     return render(request, 'projects/detail.html', {'project': project,
                                                     "editting_form": editting_form,
-                                                    "cars": cars_not_assign})
+                                                    "cars": cars_not_assign,
+                                                    'environments': environments_not_assign,})
+
 @login_required
 def assoc_car(request, projects_id, car_id):
     Projects.objects.get(id=projects_id).cars.add(car_id)
@@ -43,7 +46,15 @@ def disassoc_car(request, projects_id, car_id):
     Projects.objects.get(id=projects_id).cars.remove(car_id)
     return redirect('detail', projects_id=projects_id)
     
-    
+@login_required
+def assoc_environment(request, projects_id, environment_id):
+    Projects.objects.get(id=projects_id).environments.add(environment_id)
+    return redirect('detail', projects_id=projects_id)
+
+@login_required
+def disassoc_environment(request, projects_id, environment_id):
+    Projects.objects.get(id=projects_id).environments.remove(environment_id)
+    return redirect('detail', projects_id=projects_id)
 
 class ProjectCreate(CreateView):
     model = Projects
@@ -61,12 +72,10 @@ class ProjectUpdate(UpdateView):
 class ProjectDelete(DeleteView):
      model = Projects
      success_url = '/projects/'
-     
 
 
 class CarIndex(LoginRequiredMixin, ListView):
     model = Cars
-
 
 class CarCreate(LoginRequiredMixin, CreateView):
     model = Cars
@@ -83,49 +92,44 @@ class CarCreate(LoginRequiredMixin, CreateView):
                 s3.upload_fileobj(photo_file, BUCKET, key)
                 url = f"{S3_BASE_URL}{BUCKET}/{key}"
                 form.instance.photo_url = url
-                print(form.instance)
             except Exception as error:
                 print('An error occurred uploading photo file to S3')
                 print(error)
         return super().form_valid(form)
-    
-    
 
 class CarDetail(LoginRequiredMixin, DetailView):
     model = Cars
     sucessful_url = '/cars/'
-
-
+    
 class CarDelete(LoginRequiredMixin, DeleteView):
     model = Cars
     success_url = '/cars/'
 
-
 class CarUpdate(LoginRequiredMixin, UpdateView):
     model = Cars
-    fields = '__all__'
-     
+    fields = ['name', 'brand', 'trim', 'description']
+
+
 class EnvironmentIndex(LoginRequiredMixin, ListView):
     model = Environments
 
 class EnvironmentCreate(LoginRequiredMixin, CreateView):
     model = Environments
-    fields = ['file', 'name', 'date', 'description']
-    
+    form_class = EnvironmentForm
     
     def form_valid(self, form):
-        
         form.instance.user = self.request.user
-        blender_file = self.request.FILES.get('blender-file', None)
-        if blender_file:
+        photo_file = self.request.FILES.get('photo', None)
+        if photo_file:
             s3 = boto3.client('s3')
-            key = uuid.uuid4().hex[:6] + blender_file.name[blender_file.name.rfind('.'):]
+            key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
             try:
-                s3.upload_fileobj(blender_file, BUCKET, key)
+                s3.upload_fileobj(photo_file, BUCKET, key)
                 url = f"{S3_BASE_URL}{BUCKET}/{key}"
-                form.instance.url = url
-            except:
-                print('An error occurred uploading file to S3')
+                form.instance.photo_url = url
+            except Exception as error:
+                print('An error occurred uploading photo file to S3')
+                print(error)
         return super().form_valid(form)
 
 class EnvironmentDetail(LoginRequiredMixin, DetailView):
@@ -134,11 +138,11 @@ class EnvironmentDetail(LoginRequiredMixin, DetailView):
 
 class EnvironmentDelete(LoginRequiredMixin, DeleteView):
     model = Environments
-    success_url = '/Environments/'
+    success_url = '/environments/'
 
 class EnvironmentUpdate(LoginRequiredMixin, UpdateView):
     model = Environments
-    fields = '__all__'   
+    fields = ["name", "description"]   
 
 def add_editting(request, projects_id):
     form = EditProjectsForm(request.POST)

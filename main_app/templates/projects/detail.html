@@ -6,7 +6,9 @@
     <div class='card'>
         <div class='card-content'>
                 <span class="card-title"><h1> {{project.name}} </h1></span>
-                <p>date Created: {{project.date}}</p>
+                <h3>date Created: {{project.date}}</h3>
+                <h5>Styling/purpose: {{project.purpose}}</h5>
+
                 <div class="card-action">
                     <a href="">Edit</a>
                     <a href="">Delete</a>
@@ -27,9 +29,9 @@
 <div class="row car">
     <div class="col s6 c">
         {% if project.cars.count %}
-        <ul class="collapsible">
+        <ul class="collapsible popout">
             <li>
-                <div class="collapsible-header"><h5>Avialable Cars</h5></div>
+                <div class="collapsible-header"><h5>Cars used</h5></div>
                 {% for car in project.cars.all %}
                 <div class="collapsible-body">
                     <a href="{% url 'car_detail' car.id %}">
@@ -48,13 +50,13 @@
             </li>
          </ul>
         {% else %}
-        <div class="collapsible card">
+        <div class="collapsible-header card">
                 <h5>There aren't any cars in {{project.name}}</h5>
         </div>
         {% endif %}
     </div>
     <div class="col s6 c">
-        <ul class="collapsible">
+        <ul class="collapsible popout">
             <li>
               <div class="collapsible-header"><h5>Avialable Cars</h5></div>
                 {% if cars.count %} 
@@ -79,6 +81,60 @@
     </div>
 </div>
 
+<div class="row environment">
+    <div class="col s6 c">
+        {% if project.environments.count %}
+        <ul class="collapsible popout">
+            <li>
+                <div class="collapsible-header"><h5>Environments used</h5></div>
+                {% for environment in project.environments.all %}
+                <div class="collapsible-body">
+                    <a href="{% url 'environment_detail' environment.id %}">
+                    <div class='card-content'>
+                        <span class="card-title">
+                            {{environment.name}} 
+                        </span>
+                    </div></a>
+                    <div class="card-action">
+                        <form action="{% url 'disassoc_environment' project.id environment.id %}" method="'POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn">Remove</button></form>
+                    </div>
+                </div>
+                {% endfor %}
+            </li>
+         </ul>
+        {% else %}
+        <div class="collapsible-header card">
+                <h5>There aren't any environments used in {{project.name}}</h5>
+        </div>
+        {% endif %}
+    </div>
+    <div class="col s6 c">
+        <ul class="collapsible popout">
+            <li>
+                <div class="collapsible-header"><h5>Available Environments
+                </h5></div>
+                {% if environments.count %} 
+                {% for environment in environments.all %}
+                <div class="collapsible-body row">
+                    <a href="">
+                        <div class="card-content col s6">
+                            <h6 class="card-title">{{environment.name}}</h6>
+                        </div>
+                    </a>
+                <div class="card-action col s6">
+                    <form action="{% url 'assoc_environment' project.id environment.id %}" method="'POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">ADD</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %} {% endif %}                
+            </li>
+        </ul>
+    </div>
+</div>
 
 
 <script>
@@ -97,27 +153,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
 {% endblock %}
 
-<div class="row environment">
-    <li>
-        <div class="collapsible-header"><h5>Avialable environment
-        </h5></div>
-        {% if environments.count %} 
-        {% for environment in environments.all %}
-        <div class="collapsible-body row">
-            <a href="">
-                <div class="card-content col s6">
-                    <h6 class="card-title">
-                    {{environment.name}}
-                    </h6>
-                 </div>
-            </a>
-        <div class="card-action col s6">
-            <form action="" method="'POST">
-                {% csrf_token %}
-                <button type="submit" class="btn">ADD</button>
-            </form>
-        </div>
-    </div>
-    {% endfor %} {% endif %}                
-    </li>
-</div>

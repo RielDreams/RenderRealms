@@ -26,13 +26,12 @@ class Cars(models.Model):
     def get_absolute_url(self):
         return reverse("car_detail", kwargs={"pk": self.id})
     
-    
 class Environments(models.Model):
     name = models.CharField(max_length=250)
     date = models.DateField('Date Created')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    url = models.CharField(max_length=250)
     description = models.TextField(max_length=255, blank=True)
+    photo_url = models.CharField(max_length=500)
     
     def __str__(self) -> str:
         return f'{self.name}'
@@ -46,14 +45,14 @@ class Characters(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     url = models.CharField(max_length=250)
     description = models.TextField(max_length=255, blank=True)
+    photo_url = models.CharField(max_length=500)
     
     def __str__(self) -> str:
         return f'{self.name}'
     
     def get_absolute_url(self):
         return reverse("character_detail", kwargs={"pk": self.id})
-
-     
+    
 class Projects(models.Model):
     name = models.CharField(max_length=250)
     date = models.DateField('Date Created')
@@ -62,8 +61,8 @@ class Projects(models.Model):
                                choices=PURPOSE,
                                default=PURPOSE[0][0])
     cars = models.ManyToManyField(Cars)
-    environment = models.ManyToManyField(Environments)
-    character = models.ManyToManyField(Characters)
+    environments = models.ManyToManyField(Environments)
+    characters = models.ManyToManyField(Characters)
     description = models.TextField(max_length=500)
     
     def __str__(self) -> str:
@@ -71,6 +70,8 @@ class Projects(models.Model):
     
     def get_absolute_url(self):
         return reverse("detail", kwargs={"project_id": self.id})
+    
+    
     
 class EditCars(models.Model):
     date = models.DateField('Date Editted')
@@ -81,8 +82,7 @@ class EditCars(models.Model):
     
     class Meta:
         ordering = ('-date',)
-        
-        
+               
 class EditEnvironments(models.Model):
     date = models.DateField('Date Editted')
     car = models.ForeignKey(Cars, on_delete=models.CASCADE)

@@ -2,6 +2,9 @@
 
 <h1>environment</h1>
 
+
+{% if environments.count %}
+
 {% for environment in object_list %}
 <div class="card">
   <a href="{% url 'car_detail' car.id %}" >
@@ -12,4 +15,9 @@
   </div>
   </a>
 </div>
-{% endfor %} {% endblock %}
+{% endfor %}
+{% else %}
+<h3>You need to add an environment first</h3>
+<h4><a href="{% url 'environment_create' %}">Click here</a></h4>
+{% endif %} 
+{% endblock %}
