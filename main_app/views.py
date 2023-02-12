@@ -5,7 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import CarForm, EnvironmentForm
+from .forms import CarForm, EnvironmentForm, CharacterForm
 import uuid
 import boto3
 from .models import Projects, Cars, Environments, Characters
@@ -17,7 +17,12 @@ BUCKET = 'assetmodels'
 
 # Create your views here.
 def home(request):
-    return render(request, "home.html")
+    cars = Cars.objects.all()
+    environments = Environments.objects.all()
+    character = Characters.objects.all()
+    return render(request, "home.html", {'cars': cars,
+                                         'environments': environments,
+                                         'character': character,})
 
 def about(request):
     return render(request, 'about.html')
@@ -56,7 +61,18 @@ def disassoc_environment(request, projects_id, environment_id):
     Projects.objects.get(id=projects_id).environments.remove(environment_id)
     return redirect('detail', projects_id=projects_id)
 
-class ProjectCreate(CreateView):
+@login_required
+def assoc_character(request, projects_id, character_id):
+    Projects.objects.get(id=projects_id).characters.add(character_id)
+    return redirect('detail', projects_id=projects_id)
+
+@login_required
+def disassoc_character(request, projects_id, character_id):
+    Projects.objects.get(id=projects_id).characters.remove(character_id)
+    return redirect('detail', projects_id=projects_id)
+
+
+class ProjectCreate(LoginRequiredMixin, CreateView):
     model = Projects
     fields = ['name', 'date', 'purpose']
     success_url = '/projects/'
@@ -65,11 +81,11 @@ class ProjectCreate(CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
     
-class ProjectUpdate(UpdateView):
+class ProjectUpdate(LoginRequiredMixin, UpdateView):
     model = Projects
     fields = '__all__'
     
-class ProjectDelete(DeleteView):
+class ProjectDelete(LoginRequiredMixin, DeleteView):
      model = Projects
      success_url = '/projects/'
 
@@ -143,6 +159,42 @@ class EnvironmentDelete(LoginRequiredMixin, DeleteView):
 class EnvironmentUpdate(LoginRequiredMixin, UpdateView):
     model = Environments
     fields = ["name", "description"]   
+
+
+class CharacterIndex(LoginRequiredMixin, ListView):
+    model = Characters
+
+class CharacterCreate(LoginRequiredMixin, CreateView):
+    model = Characters
+    form_class = CharacterForm
+    
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        photo_file = self.request.FILES.get('photo', None)
+        if photo_file:
+            s3 = boto3.client('s3')
+            key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+            try:
+                s3.upload_fileobj(photo_file, BUCKET, key)
+                url = f"{S3_BASE_URL}{BUCKET}/{key}"
+                form.instance.photo_url = url
+            except Exception as error:
+                print('An error occurred uploading photo file to S3')
+                print(error)
+        return super().form_valid(form)
+
+class CharacterDetail(LoginRequiredMixin, DetailView):
+    model = Characters
+    sucessful_url = '/characters/'
+
+class CharacterDelete(LoginRequiredMixin, DeleteView):
+    model = Characters
+    success_url = '/characters/'
+
+class CharacterUpdate(LoginRequiredMixin, UpdateView):
+    model = Characters
+    fields = ["name", "description"]   
+
 
 def add_editting(request, projects_id):
     form = EditProjectsForm(request.POST)

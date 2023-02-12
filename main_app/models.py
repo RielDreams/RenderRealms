@@ -43,7 +43,6 @@ class Characters(models.Model):
     name = models.CharField(max_length=250)
     date = models.DateField('Date Created')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    url = models.CharField(max_length=250)
     description = models.TextField(max_length=255, blank=True)
     photo_url = models.CharField(max_length=500)
     
@@ -70,7 +69,6 @@ class Projects(models.Model):
     
     def get_absolute_url(self):
         return reverse("detail", kwargs={"project_id": self.id})
-    
     
     
 class EditCars(models.Model):

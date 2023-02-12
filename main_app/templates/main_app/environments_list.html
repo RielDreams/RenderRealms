@@ -3,11 +3,11 @@
 <h1>environment</h1>
 
 
-{% if environments.count %}
+{% if object_list.count %}
 
 {% for environment in object_list %}
 <div class="card">
-  <a href="{% url 'car_detail' car.id %}" >
+  <a href="{% url 'environment_detail' environment.id %}" >
   <div class="card-content">
     <span class="card-title">
         {{environment.name}}

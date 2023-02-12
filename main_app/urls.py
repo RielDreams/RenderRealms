@@ -24,4 +24,10 @@ urlpatterns = [
     path('environments/<int:pk>/', views.EnvironmentDetail.as_view(), name='environment_detail'),
     path('environments/<int:pk>/update', views.EnvironmentUpdate.as_view(), name='environment_update'),
     path('environments/<int:pk>/delete', views.EnvironmentDelete.as_view(), name='environment_delete'),
+    path('characters/', views.CharacterIndex.as_view(), name='character_index'),
+    path('characters/create', views.CharacterCreate.as_view(), name='character_create'),
+    path('characters/<int:pk>/', views.CharacterDetail.as_view(), name='character_detail'),
+    path('characters/<int:pk>/update', views.CharacterUpdate.as_view(), name='character_update'),
+    path('characters/<int:pk>/delete', views.CharacterDelete.as_view(), name='character_delete'),
 ]
+    

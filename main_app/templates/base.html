@@ -28,12 +28,12 @@
             {% endif %}
             <ul id="dropdown1" class="dropdown-content">
               <li><a href="{% url 'car_create' %}">Cars</a></li>
-              <li><a href="">Characters</a></li>
+              <li><a href="{% url 'character_create' %}">Characters</a></li>
               <li><a href="{% url 'environment_create' %}">Environments</a></li>
             </ul>
             <ul id="dropdown2" class="dropdown-content">
               <li><a href="{% url 'car_index' %}">Cars</a></li>
-              <li><a href="">Characters</a></li>
+              <li><a href="{% url 'character_index' %}">Characters</a></li>
               <li><a href="{% url 'environment_index' %}">Environments</a></li>
             </ul>
             <ul class="right">
