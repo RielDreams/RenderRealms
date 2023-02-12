@@ -1,1 +1,1 @@
-web: gunicorn FENDERBLENDER.wsgi
+web: gunicorn fenderblender.wsgi
