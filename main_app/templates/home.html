@@ -16,7 +16,7 @@
     <img src="https://i.imgur.com/We8uFVm.jpg" alt="" class='home card'>
 </div>
 
-<div class="carousel">
+<div class="carousel carousel-slider center card">
     {% for car in cars %}
     <a class="carousel-item" href="{% url 'car_detail' car.id %}"><img src="{{car.photo_url}}" alt=""/></a>
     {% endfor %} 
