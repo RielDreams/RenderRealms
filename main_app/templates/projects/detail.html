@@ -136,6 +136,60 @@
     </div>
 </div>
 
+<div class="row character">
+    <div class="col s6 c">
+        {% if project.characters.count %}
+        <ul class="collapsible popout">
+            <li>
+                <div class="collapsible-header"><h5>Environments used</h5></div>
+                {% for character in project.characters.all %}
+                <div class="collapsible-body">
+                    <a href="{% url 'character_detail' character.id %}">
+                    <div class='card-content'>
+                        <span class="card-title">
+                            {{character.name}} 
+                        </span>
+                    </div></a>
+                    <div class="card-action">
+                        <form action="{% url 'disassoc_character' project.id character.id %}" method="'POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn">Remove</button></form>
+                    </div>
+                </div>
+                {% endfor %}
+            </li>
+         </ul>
+        {% else %}
+        <div class="collapsible-header card">
+                <h5>There aren't any characters used in {{project.name}}</h5>
+        </div>
+        {% endif %}
+    </div>
+    <div class="col s6 c">
+        <ul class="collapsible popout">
+            <li>
+                <div class="collapsible-header"><h5>Available Environments
+                </h5></div>
+                {% if characters.count %} 
+                {% for character in characters.all %}
+                <div class="collapsible-body row">
+                    <a href="">
+                        <div class="card-content col s6">
+                            <h6 class="card-title">{{character.name}}</h6>
+                        </div>
+                    </a>
+                <div class="card-action col s6">
+                    <form action="{% url 'assoc_character' project.id character.id %}" method="'POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">ADD</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %} {% endif %}                
+            </li>
+        </ul>
+    </div>
+</div>
 
 <script>
     const dateEl = document.getElementById('id_date')

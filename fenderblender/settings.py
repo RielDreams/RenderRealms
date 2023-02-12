@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+API_KEY = os.getenv('API_KEY')
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,6 +36,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'main_app',
+    'secrets',
     'storages',
     "django.contrib.admin",
     "django.contrib.auth",
@@ -78,7 +83,11 @@ WSGI_APPLICATION = "fenderblender.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'blender',
+        'NAME': 'RielDreams/renderrealms',
+        'USER': 'RielDreams',
+        'PASSWORD': '{{API_KEY}}',
+        'HOST': 'db.bit.io',
+        'PORT': '5432',
     }
 }
 
@@ -126,3 +135,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = '/projects/'
 LOGOUT_REDIRECT_URL = '/'
+
+import django_on_heroku
+django_on_heroku.settings(locals())
