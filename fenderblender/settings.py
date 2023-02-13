@@ -85,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'RielDreams/renderrealms',
         'USER': 'RielDreams',
-        'PASSWORD': '',
+        'PASSWORD': 'v2_3z2cV_csZ6VPdqYWqnKHrXazm3qZU',
         'HOST': 'db.bit.io',
         'PORT': '5432',
     }

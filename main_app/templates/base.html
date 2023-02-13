@@ -43,7 +43,7 @@
               {% if user.is_authenticated %}
               <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Add Assets</a></li>
               <li><a class="dropdown-trigger" href="#!" data-target="dropdown2">see Assets</a></li>
-              <li><a href="{% url 'funko_create' %}">Create Project</a></li>
+              <li><a href="{% url 'project_create' %}">Create Project</a></li>
               <li><a href="{% url 'logout' %}">LogOut</a></li> 
               {% else %}
               <li><a href="{% url 'login' %}">Login</a></li>

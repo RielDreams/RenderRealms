@@ -2,7 +2,7 @@
 {% block content %}
 
 <h1>My Projects</h1>
-
+{% if projects.count %}
 {% for project in projects %}
 <a href='{% url "detail" project.id %}'>
 <div class="card">
@@ -12,4 +12,8 @@
 </div>
 </a>
 {% endfor %} 
+{% else %} 
+<h3>You need to add Projects first</h3>
+<h4><a href="{% url 'project_create' %}">Click here</a></h4>
+{% endif %}
 {% endblock %}
